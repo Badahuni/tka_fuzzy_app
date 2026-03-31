@@ -93,7 +93,7 @@ if "performed_sets" not in st.session_state:
     st.session_state.performed_sets = {}
 
 
-st.title("🦵 TKA 환자 재활 앱")
+st.title("무릎인공관절 환자 재활 앱🦵")
 st.caption("매일 상태를 입력하고 오늘의 운동을 확인하세요.")
 
 menu = st.sidebar.radio(
@@ -208,41 +208,54 @@ if menu == "오늘 입력":
                 key=f"set_{selected_ex['name']}_{selected_ex['sets']}"
             )
 
-            st.subheader("추천 운동")
-            st.write(f"- 운동명: {selected_ex.get('name', '이름 없음')}")
-            st.write(f"- 세트: {selected_ex.get('sets', '정보 없음')}")
-            st.write(f"- 횟수: {selected_ex.get('reps', '정보 없음')}")
-            st.write(f"- 설명: {selected_ex.get('note') or selected_ex.get('description') or '설명 없음'}")
+            # 추천 결과가 있을 때만 표시
+        if exercise_list and result:
+            st.subheader("추천 운동 목록")
 
+            performed_sets = {}
 
-        performed_sets = {}
-        for ex in exercise_list:
-            performed_sets[ex["name"]] = st.number_input(
-                f"{ex['name']} 수행 세트",
-                min_value=0,
-                max_value=ex["sets"],
-                value=0,
-                key=f"set_{ex['name']}_{result['name']}_{result['postop_day']}"
-            )
+            for i, ex in enumerate(exercise_list):
+                ex_name = ex.get("name", f"운동 {i + 1}")
+                ex_sets = ex.get("sets", 0)
+                ex_reps = ex.get("reps", "정보 없음")
+                ex_note = ex.get("note") or ex.get("description") or "설명 없음"
 
-            if st.button("저장하기", use_container_width=True):
+                st.markdown(f"### {i + 1}. {ex_name}")
+                st.write(f"- 세트: {ex_sets}")
+                st.write(f"- 횟수: {ex_reps}")
+                st.write(f"- 설명: {ex_note}")
+
+                performed_sets[ex_name] = st.number_input(
+                    f"{ex_name} 수행 세트",
+                    min_value=0,
+                    max_value=int(ex_sets) if ex_sets else 0,
+                    value=0,
+                    step=1,
+                    key=f"performed_set_{i}_{ex_name}_{result.get('name', 'user')}_{result.get('postop_day', 0)}"
+                )
+
+                st.divider()
+
+            if st.button("저장하기", use_container_width=True, key="save_button_main"):
                 adherence = calculate_adherence(exercise_list, performed_sets)
 
                 save_data({
                     "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "name": result["name"],
-                    "postop_day": result["postop_day"],
-                    "pain": result["pain"],
-                    "fatigue": result["fatigue"],
-                    "rom": result["rom"],
+                    "name": result.get("name", ""),
+                    "postop_day": result.get("postop_day", ""),
+                    "pain": result.get("pain", ""),
+                    "fatigue": result.get("fatigue", ""),
+                    "rom": result.get("rom", ""),
                     "adherence": adherence,
-                    "fuzzy_score": result["fuzzy_score"],
-                    "final_score": result["final_score"],
-                    "intensity": result["intensity"],
+                    "fuzzy_score": result.get("fuzzy_score", ""),
+                    "final_score": result.get("final_score", ""),
+                    "intensity": result.get("intensity", ""),
                     "exercise_list": str(exercise_list)
                 })
 
                 st.success(f"저장 완료! 순응도: {adherence}%")
+                st.metric("오늘 순응도", f"{adherence}%")
+                st.progress(min(adherence / 100, 1.0))
 
                 # 저장 후 상태 초기화
                 st.session_state.performed_sets = {}
@@ -250,6 +263,19 @@ if menu == "오늘 입력":
                 st.session_state.analysis_result = {}
                 st.session_state.analysis_done = False
 
+
+                st.subheader("저장된 재활 기록 보기")
+
+                if st.button("기록 불러오기", key="load_history_button"):
+                    try:
+                        df = pd.read_csv("rehab_log.csv")
+
+                        st.dataframe(df, use_container_width=True)
+
+                        if "adherence" in df.columns:
+                            st.line_chart(df["adherence"])
+                    except FileNotFoundError:
+                        st.warning("아직 저장된 기록이 없습니다.")
 
 
 # =========================
