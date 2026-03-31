@@ -191,7 +191,7 @@ if menu == "오늘 입력":
         if selected_ex:
             st.write(f"## {selected_ex['name']}")
             st.write(f"- {selected_ex['reps']}회 × {selected_ex['sets']}세트")
-            st.write(f"- 설명: {selected_ex['note']}")
+            st.write(f"- 설명: {selected_ex.get('note') or selected_ex.get('description') or '설명 없음'}")
 
             # ✅ 영상 1개만 출력 (핵심🔥)
             if selected_ex.get("video_link"):
@@ -208,7 +208,13 @@ if menu == "오늘 입력":
                 key=f"set_{selected_ex['name']}_{selected_ex['sets']}"
             )
 
-        st.subheader("운동 수행 체크")
+        st.subheader("추천 운동")
+
+st.write(f"- 운동명: {selected_ex.get('name', '이름 없음')}")
+st.write(f"- 세트: {selected_ex.get('sets', '정보 없음')}")
+st.write(f"- 횟수: {selected_ex.get('reps', '정보 없음')}")
+st.write(f"- 설명: {selected_ex.get('note') or selected_ex.get('description') or '설명 없음'}")
+
 
         performed_sets = {}
         for ex in exercise_list:
