@@ -203,17 +203,16 @@ if menu == "오늘 입력":
             performed_set = st.number_input(
                 "수행한 세트 수",
                 min_value=0,
-                max_value=selected_ex["sets"],
+                max_value=selected_ex.get("sets", 0),
                 value=0,
                 key=f"set_{selected_ex['name']}_{selected_ex['sets']}"
             )
 
-        st.subheader("추천 운동")
-
-st.write(f"- 운동명: {selected_ex.get('name', '이름 없음')}")
-st.write(f"- 세트: {selected_ex.get('sets', '정보 없음')}")
-st.write(f"- 횟수: {selected_ex.get('reps', '정보 없음')}")
-st.write(f"- 설명: {selected_ex.get('note') or selected_ex.get('description') or '설명 없음'}")
+            st.subheader("추천 운동")
+            st.write(f"- 운동명: {selected_ex.get('name', '이름 없음')}")
+            st.write(f"- 세트: {selected_ex.get('sets', '정보 없음')}")
+            st.write(f"- 횟수: {selected_ex.get('reps', '정보 없음')}")
+            st.write(f"- 설명: {selected_ex.get('note') or selected_ex.get('description') or '설명 없음'}")
 
 
         performed_sets = {}
@@ -251,8 +250,7 @@ st.write(f"- 설명: {selected_ex.get('note') or selected_ex.get('description') 
                 st.session_state.analysis_result = {}
                 st.session_state.analysis_done = False
 
-            # 상태 초기화
-            st.session_state.performed_sets = {}
+
 
 # =========================
 # 2. 기록 보기
