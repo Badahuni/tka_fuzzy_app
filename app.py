@@ -172,14 +172,41 @@ if menu == "오늘 입력":
         result = st.session_state.analysis_result
         exercise_list = st.session_state.recommended_exercises
 
-        st.subheader("오늘의 운동")
+        st.subheader("추천 운동")
 
+        # 운동 리스트
+        exercise_names = [ex["name"] for ex in exercise_list]
+
+        # 운동 선택
+        selected_name = st.selectbox("운동 선택", exercise_names)
+
+        # 선택된 운동 찾기
+        selected_ex = None
         for ex in exercise_list:
-            st.write(f"**{ex['name']}**")
-            st.write(f"{ex['reps']}회 × {ex['sets']}세트")
+            if ex["name"] == selected_name:
+                selected_ex = ex
+                break
 
-            if ex.get("video_link"):
-                st.markdown(f"[영상 보기]({ex['video_link']})")
+        # 선택된 운동 표시
+        if selected_ex:
+            st.write(f"## {selected_ex['name']}")
+            st.write(f"- {selected_ex['reps']}회 × {selected_ex['sets']}세트")
+            st.write(f"- 설명: {selected_ex['note']}")
+
+            # ✅ 영상 1개만 출력 (핵심🔥)
+            if selected_ex.get("video_link"):
+                st.video(selected_ex["video_link"])
+            else:
+                st.info("영상 없음")
+
+            # 수행 세트 입력 (key 충돌 방지🔥)
+            performed_set = st.number_input(
+                "수행한 세트 수",
+                min_value=0,
+                max_value=selected_ex["sets"],
+                value=0,
+                key=f"set_{selected_ex['name']}_{selected_ex['sets']}"
+            )
 
         st.subheader("운동 수행 체크")
 
@@ -187,28 +214,39 @@ if menu == "오늘 입력":
         for ex in exercise_list:
             performed_sets[ex["name"]] = st.number_input(
                 f"{ex['name']} 수행 세트",
-                0, ex["sets"], 0,
-                key=ex["name"]
+                min_value=0,
+                max_value=ex["sets"],
+                value=0,
+                key=f"set_{ex['name']}_{result['name']}_{result['postop_day']}"
             )
 
-        if st.button("저장하기", use_container_width=True):
-            adherence = calculate_adherence(exercise_list, performed_sets)
+            if st.button("저장하기", use_container_width=True):
+                adherence = calculate_adherence(exercise_list, performed_sets)
 
-            save_data({
-                "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "name": result["name"],
-                "postop_day": result["postop_day"],
-                "pain": result["pain"],
-                "fatigue": result["fatigue"],
-                "rom": result["rom"],
-                "adherence": adherence,
-                "fuzzy_score": result["fuzzy_score"],
-                "final_score": result["final_score"],
-                "intensity": result["intensity"],
-                "exercise_list": str(exercise_list)
-            })
+                save_data({
+                    "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "name": result["name"],
+                    "postop_day": result["postop_day"],
+                    "pain": result["pain"],
+                    "fatigue": result["fatigue"],
+                    "rom": result["rom"],
+                    "adherence": adherence,
+                    "fuzzy_score": result["fuzzy_score"],
+                    "final_score": result["final_score"],
+                    "intensity": result["intensity"],
+                    "exercise_list": str(exercise_list)
+                })
 
-            st.success(f"저장 완료! 순응도: {adherence}%")
+                st.success(f"저장 완료! 순응도: {adherence}%")
+
+                # 저장 후 상태 초기화
+                st.session_state.performed_sets = {}
+                st.session_state.recommended_exercises = []
+                st.session_state.analysis_result = {}
+                st.session_state.analysis_done = False
+
+            # 상태 초기화
+            st.session_state.performed_sets = {}
 
 # =========================
 # 2. 기록 보기
