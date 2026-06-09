@@ -61,7 +61,7 @@ EXERCISE_LIBRARY = [
         "sets": 3,
         "reps": 10,
         "type": "ROM",
-        "video_link": "https://youtu.be/_1zihncx4ZQ?si=zZh8r1txLGsDfT6N"
+        "video_link": "videos/ankle.mp4"
     },
     {
         "name": "무릎굽히고 펴기",
