@@ -61,15 +61,7 @@ EXERCISE_LIBRARY = [
         "sets": 3,
         "reps": 10,
         "type": "ROM",
-        "video_link": "videos/ankle.mp4"
-    },
-    {
-        "name": "무릎굽히고 펴기",
-        "level": "Low",
-        "sets": 3,
-        "reps": 10,
-        "type": "ROM",
-        "video_link": "https://youtu.be/dwmr-AQmm-Q?si=8lk71irj_VqL9U0q"
+        "video_link": None
     },
     {
         "name": "허벅지 기초긴장",
@@ -77,7 +69,8 @@ EXERCISE_LIBRARY = [
         "sets": 3,
         "reps": 10,
         "type": "Strength",
-        "video_link": "https://youtube.com/shorts/0af1u1JrGYY?si=dDqTFU7hhqYb-fWg"
+        "video_link": None
+
     },
     {
         "name": "수동 무릎 구부리기",
@@ -87,6 +80,16 @@ EXERCISE_LIBRARY = [
         "type": "ROM",
         "video_link": "https://youtube.com/shorts/D76FGNkZCAc?si=OI6HbFh2SLX5d1Vb"
     },
+    {
+        "name": "골반 기저근 수축",
+        "level": "Low",
+        "sets": 2,
+        "reps": 10,
+        "type": "ROM",
+        "video_link": None
+    },
+
+
 
     # Moderate
 
@@ -99,15 +102,7 @@ EXERCISE_LIBRARY = [
         "video_link": "https://youtube.com/shorts/hBqSeoD1YfU?si=ocO_FU5VLZb9v0cA"
     },
     {
-        "name": "직거상 운동",
-        "level": "Moderate",
-        "sets": 3,
-        "reps": 10,
-        "type": "Strength",
-        "video_link": "https://www.youtube.com/watch?v=8M7nR6F7xJQ"
-    },
-    {
-        "name": "침대에서 앉았다 일어서기",
+        "name": "장경인대 프로그램",
         "level": "Moderate",
         "sets": 3,
         "reps": 10,
@@ -115,33 +110,34 @@ EXERCISE_LIBRARY = [
         "video_link": "https://www.youtube.com/watch?v=aclHkVaku9U"
     },
     {
-        "name": "Step-up",
+        "name": "클램쉘",
         "level": "Moderate",
         "sets": 3,
         "reps": 10,
         "type": "Function",
         "video_link": "https://www.youtube.com/watch?v=WCFCdxz7XJ4"
     },
+    {
+        "name": "종아리 스트레칭",
+        "level": "Moderate",
+        "sets": 3,
+        "reps": 10,
+        "type": "ROM",
+        "video_link": None
+    },
+
 
 
 
     # High
     {
-        "name": "Step-up",
+        "name": "침대에서 앉았다 일어서기",
         "level": "Moderate",
         "sets": 3,
         "reps": 10,
         "type": "Function",
         "video_link": "https://www.youtube.com/watch?v=WCFCdxz7XJ4"
                     },
-    {
-        "name": "sit to stand",
-        "level": "High",
-        "sets": 3,
-        "reps": 12,
-        "type": "Strength",
-        "video_link": "https://www.youtube.com/watch?v=QOVaHwm-Q6U"
-    },
     {
         "name": "Balance training",
         "level": "High",

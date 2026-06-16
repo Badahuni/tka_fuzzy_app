@@ -5,7 +5,9 @@ from dataclasses import asdict
 import pandas as pd
 import streamlit as st
 
-from fuzzy_rehab_manual import PatientInput, recommend_exercise
+from fuzzy_rehab_manual import (PatientInput,
+                                recommend_exercise,
+                                EXERCISE_LIBRARY)
 
 
 st.set_page_config(
@@ -74,68 +76,6 @@ def get_previous_record(df, patient_name):
 # =========================
 # 2. 운동 설명 사전
 # =========================
-EXERCISE_INFO = {
-    "Ankle pump": {
-        "korean_name": "발목 펌프 운동",
-        "note": "발목을 위아래로 천천히 움직여 혈액순환을 돕습니다.",
-        "video_path": None
-    },
-    "Quad set": {
-        "korean_name": "대퇴사두근 등척성 수축",
-        "note": "무릎을 편 상태에서 무릎 밑 수건을 눌러서 허벅지 앞쪽에 힘을 주어 5초간 유지합니다.",
-        "video_link": None
-    },
-    "Heel slide": {
-        "korean_name": "무릎 힐 슬라이드",
-        "note": "발뒤꿈치를 바닥에 끌면서 무릎을 천천히 굽혔다 폅니다.",
-        "video_link": None
-    },
-    "Passive knee extension stretch": {
-        "korean_name": "수동 무릎 신전 스트레칭",
-        "note": "무릎 뒤를 편하게 펴는 자세를 유지하여 신전을 돕습니다.",
-        "video_link": None
-    },
-    "Straight leg raise": {
-        "korean_name": "하지 직거상 운동",
-        "note": "무릎을 편 상태로 다리를 천천히 들어 올립니다.",
-        "video_link": None
-    },
-    "Hip adductor": {
-        "korean_name": "다리 모았다 펼치기",
-        "note": "누운상태에서 고관절을 벌렸다 오므렸다 반복한다.",
-        "video_link": None
-    },
-    "Sit to stand": {
-        "korean_name": "앉았다 일어서기",
-        "note": "무릎 부담이 적은 범위에서 가볍게 앉는 동작을 합니다.",
-        "video_link": None
-    },
-    "Step up": {
-        "korean_name": "스텝 업",
-        "note": "낮은 발판을 이용해 한 발씩 오르내립니다.",
-        "video_link": None
-    },
-    "Terminal knee extension": {
-        "korean_name": "말기 무릎 신전 운동",
-        "note": "무릎을 거의 편 상태에서 마지막 신전 범위를 강화합니다.",
-        "video_link": None
-    },
-    "Balance training": {
-        "korean_name": "균형 훈련",
-        "note": "지지한 상태에서 체중 이동과 균형 유지 연습을 합니다.",
-        "video_link": None
-    },
-    "Resistance knee extension": {
-        "korean_name": "저항성 무릎 신전 운동",
-        "note": "밴드나 저항을 이용해 무릎을 펴는 근력을 강화합니다.",
-        "video_link": None
-    },
-    "Step up": {
-        "korean_name": "스텝 업",
-        "note": "낮은 발판을 이용해 한 발씩 오르내립니다.",
-        "video_link": None
-    },
-}
 
 
 # =========================
@@ -149,14 +89,14 @@ def build_exercise_prescription(result):
     prescription = []
 
     for ex_name in result.exercise_list:
-        info = EXERCISE_INFO.get(ex_name, {})
+        info = EXERCISE_LIBRARY.get(ex_name, {})
         prescription.append({
             "name": info.get("korean_name", ex_name),
             "original_name": ex_name,
             "sets": int(result.sets),
             "reps": int(result.reps),
             "note": info.get("note", "설명 없음"),
-            "video_link": info.get("video_link")
+            "video_path": info.get("video_path")
         })
 
     return prescription
@@ -224,7 +164,7 @@ if menu == "오늘 입력":
 
     pain = st.slider("오늘 통증", 0, 10, 3)
     fatigue = st.slider("오늘 피로도", 0, 10, 2)
-    rom = st.slider("오늘 ROM (°)", 0, 150, 90, step=5)
+    rom = st.slider("오늘 ROM (°)", 0, 135, 90, step=5)
 
     swelling_text = st.radio("붓기 있나요?", ["아니오", "예"], horizontal=True)
     exercise_pain_text = st.radio("운동 중 통증이 심했나요?", ["아니오", "예"], horizontal=True)
@@ -315,10 +255,14 @@ if menu == "오늘 입력":
             st.write(f"- {selected_ex['reps']}회 × {selected_ex['sets']}세트")
             st.write(f"- 설명: {selected_ex.get('note', '설명 없음')}")
 
-            if selected_ex.get("video_link"):
-                st.video(selected_ex["video_link"])
+            video_path = selected_ex.get("video_path")
+
+            if video_path and os.path.exists(video_path):
+                st.video(video_path)
             else:
                 st.info("등록된 영상이 없습니다.")
+
+
 
         if exercise_list:
             st.subheader("추천 운동 목록")

@@ -40,9 +40,9 @@ def fuzzify_fatigue(fatigue):
 
 def fuzzify_rom(rom):
     return {
-        "poor": trapezoid(rom, 0, 0, 60, 85),
-        "fair": triangle(rom, 70, 95, 120),
-        "good": trapezoid(rom, 100, 120, 150, 150)
+        "poor": trapezoid(rom, 0, 0, 70, 90),
+        "fair": triangle(rom, 85, 110, 125),
+        "good": trapezoid(rom, 115, 125, 135, 135)
     }
 
 

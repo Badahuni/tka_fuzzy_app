@@ -1,5 +1,107 @@
 from dataclasses import dataclass, asdict
 
+EXERCISE_LIBRARY = {
+
+    "Ankle pump": {
+        "phase": 1,
+        "type": "ROM",
+        "difficulty": 1,
+        "video_path": "videos/ankle_pump.mp4",
+        "korean_name": "발목 펌프 운동",
+        "note": "발목을 위아래 끝까지 올리고 내립니다"
+    },
+
+    "Quad set": {
+        "phase": 1,
+        "type": "Strength",
+        "difficulty": 1,
+        "video_path": "videos/Q_set.mp4",
+        "korean_name": "허벅지근육 수축 운동",
+        "note": "허벅지 밑에 수건이나 베개를 두고 무릎힘으로 10초간 눌러줍니다"
+    },
+
+    "Passive knee extension stretch": {
+        "phase": 1,
+        "type": "Stretch",
+        "difficulty": 1,
+        "video_path": "videos/passive knee extension.mp4",
+        "korean_name": "무릎 펴기 스트레칭",
+        "note": "무릎을 쭉 편 상태에서 내 양손으로 무릎을 밑으로 10초간 눌러줍니다"
+    },
+
+    "Calf stretch": {
+        "phase": 1,
+        "type": "Stretch",
+        "difficulty": 1,
+        "video_path": "videos/Calf stretch.mp4",
+        "korean_name": "종아리 근육 스트레칭",
+        "note": "발가락 밑에 부분에 수건을 걸고 몸쪽으로 잡아당겨서 10초이상 유지합니다"
+    },
+
+    "Assited knee flexion": {
+        "phase": 1,
+        "type": "ROM",
+        "difficulty": 2,
+        "video_path": "videos/assited knee flexion.mp4",
+        "korean_name": "보조 무릎 구부리기 운동",
+        "note": "무릎 앞쪽을 손이나 수건으로 감싸서 몸쪽으로 당깁니다"
+    },
+
+    "Heel slide": {
+        "phase": 2,
+        "type": "ROM",
+        "difficulty": 2,
+        "video_path": "videos/Heel_slide.mp4",
+        "korean_name": "무릎 구부리기 운동",
+        "note": "누운상태에서 발 뒷꿈치를 침대에 대고 가능한 범위만큼 왔다갔다 반복합니다"
+    },
+
+    "knee flexion_extension": {
+        "phase": 2,
+        "type": "ROM",
+        "difficulty": 2,
+        "video_path": "videos/knee flexion_extension.mp4",
+        "korean_name": "무릎 보조 굽히고 펴기 운동",
+        "note": "앉은상태에서 반대편 발로 무릎을 굽히고 펴고 도와줍니다"
+    },
+
+    "Heel prop": {
+        "phase": 2,
+        "type": "Stretch",
+        "difficulty": 2,
+        "video_path": "videos/heel prop.mp4",
+        "korean_name": "무릎 펴기 운동",
+        "note": "발목아래 수건을 놓고 무릎 펴기"
+    },
+
+    "Straight leg raise": {
+        "phase": 2,
+        "type": "Strength",
+        "difficulty": 2,
+        "video_path": "videos/straight leg raise.mp4",
+        "korean_name": "다리 들어올리기 운동",
+        "note": "누운상태에서 다리를 위로 들 수 있을만큼 들었다 내렸다 반복합니다"
+    },
+
+    "Short arc quad": {
+        "phase": 2,
+        "type": "Strength",
+        "difficulty": 2,
+        "video_path": "videos/short arc.mp4",
+        "korean_name": "짧은범위 무릎 펴기 운동",
+        "note": "베개를 무릎밑에 받치고 무릎을 쭉 펴줍니다"
+    },
+
+    "Sit to stand": {
+        "phase": 2,
+        "type": "Functional",
+        "difficulty": 3,
+        "video_path": "videos/sit to stand.mp4",
+        "korean_name": "앉았다 일어나기 운동",
+        "note": "침대에서 걸터 앉아서 워커를 잡고 앉았다 섰다 반복합니다"
+    },
+
+}
 
 # =========================
 # 1. Membership Functions
@@ -262,77 +364,87 @@ def filter_exercises(level, postop_day):
     실제 추천 운동 종류를 보수적으로 제한
     """
 
-    # 수술 초기 1주 이내: 강한 운동 금지
     if postop_day <= 7:
-        return [
-            "Ankle pump",
-            "Quad set",
-            "Heel slide",
-            "Passive knee extension stretch"
-        ]
+
+        if level == 1:
+            return [
+                "Ankle pump",
+                "Quad set",
+                "Calf stretch"
+            ]
+
+        elif level == 2:
+            return [
+                "Ankle pump",
+                "Quad set",
+                "Calf stretch",
+                "Passive knee extension stretch"
+            ]
+
+        else:
+            return [
+                "Ankle pump",
+                "Quad set",
+                "Calf stretch",
+                "Assited knee flexion",
+                "Passive knee extension stretch"
+            ]
 
     # 2주 이내: 아직 보수적
     elif postop_day <= 14:
-        if level <= 2:
-            return [
-                "Heel slide",
-                "Quad set",
-                "Straight leg raise",
-                "Sit to stand"
-            ]
-        else:
-            return [
-                "Heel slide",
-                "Straight leg raise",
-                "Sit to stand",
-            ]
 
-    # 3~4주차
-    elif postop_day <= 28:
-        if level <= 2:
-            return [
-                "Straight leg raise",
-                "Sit to stand",
-                "Mini squat"
-            ]
-        elif level == 3:
-            return [
-                "Hip exercise",
-                "Step up",
-                "Terminal knee extension"
-            ]
-        else:
-            return [
-                "Hip exercise",
-                "Step up",
-                "Balance training"
-            ]
-
-    # 후기 단계
-    else:
         if level == 1:
             return [
                 "Heel slide",
                 "Quad set",
-                "Sit to stand"
+                "Calf stretch",
+                "Assited knee flexion"
             ]
+
         elif level == 2:
             return [
-                "Mini squat",
-                "Sit to stand",
-                "Step up"
+                "Quad set",
+                "Calf stretch",
+                "Heel slide",
+                "Heel prop",
+                "Assited knee flexion",
+                "knee flexion_extension"
             ]
-        elif level == 3:
-            return [
-                "Step up",
-                "Resistance knee extension",
-                "Balance training"
-            ]
+
         else:
             return [
-                "Lunge",
-                "Resistance knee extension",
-                "Balance training"
+                "Quad set",
+                "Calf stretch",
+                "Heel slide",
+                "Heel prop",
+                "Assited knee flexion",
+                "knee flexion_extension"
+            ]
+
+    # 3주차
+    elif postop_day <= 21:
+
+        if level == 1:
+            return [
+                "Short arc quad",
+                "Sit to stand",
+                "knee flexion_extension"
+            ]
+
+        elif level == 2:
+            return [
+                "Short arc quad",
+                "Straight leg raise",
+                "Sit to stand",
+                "knee flexion_extension"
+            ]
+
+        else:
+            return [
+                "Straight leg raise",
+                "Sit to stand",
+                "knee flexion_extension",
+                "Short arc quad"
             ]
 
 
