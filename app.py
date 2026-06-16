@@ -351,3 +351,23 @@ elif menu == "내 기록 보기":
             if "adherence" in patient_df.columns:
                 st.subheader("순응도 변화")
                 st.line_chart(patient_df["adherence"])
+
+
+st.divider()
+
+if st.checkbox("관리자 모드"):
+
+        df = load_data()
+
+        st.subheader("저장된 환자 데이터")
+
+        st.dataframe(df)
+
+        csv = df.to_csv(index=False).encode("utf-8-sig")
+
+        st.download_button(
+            label="CSV 다운로드",
+            data=csv,
+            file_name="patient_data.csv",
+            mime="text/csv"
+        )
