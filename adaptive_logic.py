@@ -1,5 +1,5 @@
 import random
-
+from fuzzy_rehab_manual import EXERCISE_LIBRARY
 
 def adaptive_adjustment(current_score, current_data, previous_data):
     adjusted_score = current_score
@@ -53,137 +53,12 @@ def classify_intensity(score):
         return "High"
 
 
-EXERCISE_LIBRARY = [
-    # Low
-    {
-        "name": "발목 펌프 운동",
-        "level": "Low",
-        "sets": 3,
-        "reps": 10,
-        "type": "ROM",
-        "video_link": None
-    },
-    {
-        "name": "허벅지 기초긴장",
-        "level": "Low",
-        "sets": 3,
-        "reps": 10,
-        "type": "Strength",
-        "video_link": None
-
-    },
-    {
-        "name": "수동 무릎 구부리기",
-        "level": "Low",
-        "sets": 2,
-        "reps": 10,
-        "type": "ROM",
-        "video_link": "https://youtube.com/shorts/D76FGNkZCAc?si=OI6HbFh2SLX5d1Vb"
-    },
-    {
-        "name": "골반 기저근 수축",
-        "level": "Low",
-        "sets": 2,
-        "reps": 10,
-        "type": "ROM",
-        "video_link": None
-    },
-
-
-
-    # Moderate
-
-    {
-        "name": "무릎 굴곡신전 능동운동",
-        "level": "Moderate",
-        "sets": 3,
-        "reps": 10,
-        "type": "ROM",
-        "video_link": "https://youtube.com/shorts/hBqSeoD1YfU?si=ocO_FU5VLZb9v0cA"
-    },
-    {
-        "name": "장경인대 프로그램",
-        "level": "Moderate",
-        "sets": 3,
-        "reps": 10,
-        "type": "Strength",
-        "video_link": "https://www.youtube.com/watch?v=aclHkVaku9U"
-    },
-    {
-        "name": "클램쉘",
-        "level": "Moderate",
-        "sets": 3,
-        "reps": 10,
-        "type": "Function",
-        "video_link": "https://www.youtube.com/watch?v=WCFCdxz7XJ4"
-    },
-    {
-        "name": "종아리 스트레칭",
-        "level": "Moderate",
-        "sets": 3,
-        "reps": 10,
-        "type": "ROM",
-        "video_link": None
-    },
-
-
-
-
-    # High
-    {
-        "name": "침대에서 앉았다 일어서기",
-        "level": "Moderate",
-        "sets": 3,
-        "reps": 10,
-        "type": "Function",
-        "video_link": "https://www.youtube.com/watch?v=WCFCdxz7XJ4"
-                    },
-    {
-        "name": "Balance training",
-        "level": "High",
-        "sets": 3,
-        "reps": 10,
-        "type": "Balance",
-        "video_link": "https://www.youtube.com/watch?v=Ivyq8e7O5mA"
-    },
-    {
-        "name": "Stair training",
-        "level": "High",
-        "sets": 3,
-        "reps": 10,
-        "type": "Function",
-        "video_link": "https://www.youtube.com/watch?v=WCFCdxz7XJ4"
-    },
-    {
-        "name": "저항성 무릎 운동",
-        "level": "High",
-        "sets": 3,
-        "reps": 12,
-        "type": "Strength",
-        "video_link": "https://www.youtube.com/watch?v=aclHkVaku9U"
-    }
-]
-
 
 def prescribe_exercises(intensity):
-    candidates = [ex for ex in EXERCISE_LIBRARY if ex["level"] == intensity]
 
-    rom = [ex for ex in candidates if ex["type"] == "ROM"]
-    strength = [ex for ex in candidates if ex["type"] == "Strength"]
+    candidates = [
+        ex for ex in EXERCISE_LIBRARY
+        if ex["level"] == intensity
+    ]
 
-    selected = []
-
-    if rom:
-        selected.append(random.choice(rom))
-
-    if strength:
-        strength_candidates = [ex for ex in strength if ex not in selected]
-        if strength_candidates:
-            selected.append(random.choice(strength_candidates))
-
-    remaining = [ex for ex in candidates if ex not in selected]
-
-    if remaining:
-        selected += random.sample(remaining, min(2, len(remaining)))
-
-    return selected
+    return candidates
