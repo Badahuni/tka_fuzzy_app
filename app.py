@@ -15,6 +15,35 @@ st.set_page_config(
     page_icon="🦵",
     layout="centered"
 )
+st.markdown("""
+<style>
+
+/* 전체 글자 */
+html, body, [class*="css"] {
+    font-size: 25px;
+}
+
+/* 입력 항목 글자 */
+label {
+    font-size: 24px !important;
+    font-weight: bold;
+}
+
+/* 버튼 */
+div.stButton > button {
+    height: 70px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* 체크박스 */
+.stCheckbox label {
+    font-size: 25gipx !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 
 DATA_FILE = "patient_data.csv"
 
