@@ -75,7 +75,6 @@ def load_data():
         "caution"
     ])
 
-
 def save_data(row):
     df = load_data()
     new_df = pd.DataFrame([row])
@@ -344,7 +343,8 @@ if menu == "오늘 입력":
                     "caution": result.get("caution", "")
                 }
 
-                save_to_sheet(row)
+                save_data(row)  # CSV 저장
+                save_to_sheet(row)  # Google Sheets 저장
 
                 st.success("Google Sheets 저장 완료")
 
