@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from google_sheet import save_to_sheet
 from dataclasses import asdict
 
 import pandas as pd
@@ -323,7 +324,7 @@ if menu == "오늘 입력":
             if st.button("저장하기", use_container_width=True, key="save_button_main"):
                 adherence = calculate_adherence(exercise_list, performed_sets)
 
-                save_data({
+                row = {
                     "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     "name": result.get("name", ""),
                     "postop_day": result.get("postop_day", ""),
@@ -341,7 +342,11 @@ if menu == "오늘 입력":
                     "rest_seconds": result.get("rest_seconds", ""),
                     "exercise_list": str([ex["name"] for ex in exercise_list]),
                     "caution": result.get("caution", "")
-                })
+                }
+
+                save_to_sheet(row)
+
+                st.success("Google Sheets 저장 완료")
 
                 st.success(f"저장 완료! 순응도: {adherence}%")
                 st.metric("오늘 순응도", f"{adherence}%")
