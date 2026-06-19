@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from datetime import datetime
 from google_sheet import save_to_sheet
 from dataclasses import asdict
@@ -346,6 +347,7 @@ if menu == "오늘 입력":
                 save_data(row)  # CSV 저장
                 save_to_sheet(row)  # Google Sheets 저장
 
+
                 st.success("Google Sheets 저장 완료")
 
                 st.success(f"저장 완료! 순응도: {adherence}%")
@@ -389,19 +391,19 @@ elif menu == "내 기록 보기":
 
 st.divider()
 
-if st.checkbox("관리자 모드"):
+if st.checkbox("관리자 모드", key="admin_mode"):
 
-        df = load_data()
+    df = load_data()
 
-        st.subheader("저장된 환자 데이터")
+    st.subheader("저장된 환자 데이터")
 
-        st.dataframe(df)
+    st.dataframe(df)
 
-        csv = df.to_csv(index=False).encode("utf-8-sig")
+    csv = df.to_csv(index=False).encode("utf-8-sig")
 
-        st.download_button(
-            label="CSV 다운로드",
-            data=csv,
-            file_name="patient_data.csv",
-            mime="text/csv"
-        )
+    st.download_button(
+        label="CSV 다운로드",
+        data=csv,
+        file_name="patient_data.csv",
+        mime="text/csv"
+    )
