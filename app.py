@@ -272,34 +272,15 @@ if menu == "오늘 입력":
         st.subheader("추천 운동")
 
         exercise_names = [ex["name"] for ex in exercise_list]
-        selected_name = st.selectbox("운동 선택", exercise_names)
-
-        selected_ex = None
-        for ex in exercise_list:
-            if ex["name"] == selected_name:
-                selected_ex = ex
-                break
-
-        if selected_ex:
-            st.write(f"### {selected_ex['name']}")
-            st.write(f"- {selected_ex['reps']}회 × {selected_ex['sets']}세트")
-            st.write(f"- 설명: {selected_ex.get('note', '설명 없음')}")
-
-            video_path = selected_ex.get("video_path")
-
-            if video_path and os.path.exists(video_path):
-                st.video(video_path)
-            else:
-                st.info("등록된 영상이 없습니다.")
-
-
 
         if exercise_list:
+
             st.subheader("추천 운동 목록")
 
             performed_sets = {}
 
             for i, ex in enumerate(exercise_list):
+
                 ex_name = ex.get("name", f"운동 {i + 1}")
                 ex_sets = int(ex.get("sets", 0))
                 ex_reps = ex.get("reps", "정보 없음")
@@ -310,13 +291,18 @@ if menu == "오늘 입력":
                 st.write(f"- 횟수: {ex_reps}")
                 st.write(f"- 설명: {ex_note}")
 
+                video_path = ex.get("video_path")
+
+                if video_path:
+                    st.video(video_path)
+
                 performed_sets[ex_name] = st.number_input(
                     f"{ex_name} 수행 세트",
                     min_value=0,
                     max_value=ex_sets,
                     value=0,
                     step=1,
-                    key=f"performed_set_{i}_{ex_name}_{result.get('name', 'user')}_{result.get('postop_day', 0)}"
+                    key=f"performed_set_{i}_{ex_name}"
                 )
 
                 st.divider()
