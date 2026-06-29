@@ -395,8 +395,8 @@ def filter_exercises(level, postop_day):
 
         if level == 1:
             return [
-                "Heel slide",
                 "Quad set",
+                "Heel slide",
                 "Calf stretch",
                 "Assited knee flexion"
             ]
@@ -404,7 +404,6 @@ def filter_exercises(level, postop_day):
         elif level == 2:
             return [
                 "Quad set",
-                "Calf stretch",
                 "Heel slide",
                 "Heel prop",
                 "Assited knee flexion",
@@ -413,11 +412,9 @@ def filter_exercises(level, postop_day):
 
         else:
             return [
-                "Quad set",
-                "Calf stretch",
+                "Short arc quad",
                 "Heel slide",
                 "Heel prop",
-                "Assited knee flexion",
                 "knee flexion_extension"
             ]
 

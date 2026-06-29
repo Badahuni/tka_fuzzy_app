@@ -1,8 +1,6 @@
 import os
-import pandas as pd
 from datetime import datetime
 from google_sheet import save_to_sheet
-from dataclasses import asdict
 
 import pandas as pd
 import streamlit as st
@@ -40,7 +38,7 @@ div.stButton > button {
 
 /* 체크박스 */
 .stCheckbox label {
-    font-size: 25gipx !important;
+    font-size: 25gip !important;
 }
 
 </style>
