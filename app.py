@@ -188,7 +188,7 @@ if menu == "오늘 입력":
     st.subheader("오늘 상태 입력")
 
     name = st.text_input("이름", placeholder="예: 홍길동")
-    postop_day = st.number_input("수술 후 경과일 (POD)", min_value=1, max_value=365, value=7)
+    postop_day = st.number_input("수술 후 경과일 (POD)", min_value=1, max_value=365, value=10)
 
     pain = st.slider("오늘 통증 (0 = 통증 없음, 10 = 가장 심한 통증)", 0, 10, 3)
     fatigue = st.slider("오늘 컨디션 (0 = 피로 없음, 10 = 매우 피곤함)", 0, 10, 2)
