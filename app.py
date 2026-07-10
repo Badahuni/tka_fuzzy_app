@@ -253,19 +253,6 @@ if menu == "오늘 입력":
             }
             st.session_state.performed_sets = {ex["name"]: 0 for ex in exercise_list}
 
-    if st.session_state.analysis_done:
-        result = st.session_state.analysis_result
-        exercise_list = st.session_state.recommended_exercises
-
-        st.subheader("AI 추천 결과")
-        st.write(f"**퍼지 점수:** {result['fuzzy_score']}")
-        st.write(f"**운동 레벨:** Level {result['level']}")
-        st.write(f"**해석:** {result['label']}")
-        st.write(f"**권장 세트 수:** {result['sets']}세트")
-        st.write(f"**권장 반복 수:** {result['reps']}회")
-        st.write(f"**목표 굴곡 각도:** {result['target_flexion']}°")
-        st.write(f"**휴식 시간:** {result['rest_seconds']}초")
-        st.write(f"**주의사항:** {result['caution']}")
 
         st.subheader("추천 운동")
 
@@ -376,6 +363,21 @@ elif menu == "내 기록 보기":
 st.divider()
 
 if st.checkbox("관리자 모드", key="admin_mode"):
+
+
+    if st.session_state.analysis_done:
+        result = st.session_state.analysis_result
+        exercise_list = st.session_state.recommended_exercises
+
+        st.subheader("AI 추천 결과")
+        st.write(f"**퍼지 점수:** {result['fuzzy_score']}")
+        st.write(f"**운동 레벨:** Level {result['level']}")
+        st.write(f"**해석:** {result['label']}")
+        st.write(f"**권장 세트 수:** {result['sets']}세트")
+        st.write(f"**권장 반복 수:** {result['reps']}회")
+        st.write(f"**목표 굴곡 각도:** {result['target_flexion']}°")
+        st.write(f"**휴식 시간:** {result['rest_seconds']}초")
+        st.write(f"**주의사항:** {result['caution']}")
 
     df = load_data()
 
