@@ -208,7 +208,12 @@ st.divider()
 # =========================
 st.subheader("오늘 통증 정도")
 
-st.caption("0은 통증 없음, 10은 가장 심한 통증입니다.")
+st.markdown(
+    "<p style='color:black; font-size:24px; font-weight:600;'>"
+    "0은 통증 없음, 10은 가장 심한 통증입니다."
+    "</p>",
+    unsafe_allow_html=True
+)
 
 pain_options = [
     "😊 0",
@@ -244,7 +249,12 @@ st.info(f"선택한 통증 점수: {pain}점")
 # =========================
 st.subheader("오늘 컨디션")
 
-st.caption("0은 피로 없음, 10은 매우 심한 피로입니다.")
+st.markdown(
+    "<p style='color:black; font-size:24px; font-weight:600;'>"
+    "0은 피로 없음, 10은 매우 심한 피로입니다."
+    "</p>",
+    unsafe_allow_html=True
+)
 
 fatigue = st.number_input(
     "피로도 점수",
@@ -264,7 +274,7 @@ st.subheader("오늘 치료실에서 수행한 무릎 굴곡 각도")
 st.caption("무릎이 구부러지는 각도를 5도 단위로 입력하세요.")
 
 rom = st.number_input(
-    " 버튼을 눌러주세요 (°)",
+    " + - 버튼을 눌러주세요 (°)",
     min_value=0,
     max_value=135,
     value=100,
@@ -276,7 +286,6 @@ rom = st.number_input(
 # =========================
 # 붓기 및 운동 중 통증
 # =========================
-st.subheader("추가 상태 확인")
 
 swelling_text = st.radio(
     "오늘 무릎에 붓기가 있나요?",
