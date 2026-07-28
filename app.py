@@ -20,19 +20,19 @@ st.markdown("""
 
 /* 전체 글자 */
 html, body, [class*="css"] {
-    font-size: 25px;
+    font-size: 28px;
 }
 
 /* 입력 항목 글자 */
 label {
-    font-size: 24px !important;
+    font-size: 26px !important;
     font-weight: bold;
 }
 
 /* 버튼 */
 div.stButton > button {
     height: 70px;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -180,22 +180,117 @@ menu = st.sidebar.radio(
     ["오늘 입력", "내 기록 보기"]
 )
 
+# =========================
+# 오늘 상태 입력
+# =========================
+st.header("오늘 상태 입력")
+
+name = st.text_input(
+    "이름",
+    placeholder="예: 홍길동",
+    key="patient_name"
+)
+
+postop_day = st.number_input(
+    "수술 후 경과일수 (POD)",
+    min_value=1,
+    max_value=21,
+    value=7,
+    step=1,
+    key="postop_day"
+)
+
+st.divider()
+
 
 # =========================
-# 7. 오늘 입력
+# 통증 입력: 이모지 선택
 # =========================
-if menu == "오늘 입력":
-    st.subheader("오늘 상태 입력")
+st.subheader("오늘 통증 정도")
 
-    name = st.text_input("이름", placeholder="예: 홍길동")
-    postop_day = st.number_input("수술 후 경과일 (POD)", min_value=1, max_value=365, value=10)
+st.caption("0은 통증 없음, 10은 가장 심한 통증입니다.")
 
-    pain = st.slider("오늘 통증 (0 = 통증 없음, 10 = 가장 심한 통증)", 0, 10, 3)
-    fatigue = st.slider("오늘 컨디션 (0 = 피로 없음, 10 = 매우 피곤함)", 0, 10, 2)
-    rom = st.slider("오늘 치료실에서 수행한 무릎 굴곡 각도 (°)", 0, 135, 90, step=5)
+pain_options = [
+    "😊 0",
+    "😊 1",
+    "🙂 2",
+    "🙂 3",
+    "😐 4",
+    "😐 5",
+    "😣 6",
+    "😣 7",
+    "😫 8",
+    "😫 9",
+    "😭 10"
+]
 
-    swelling_text = st.radio("붓기 있나요?", ["아니오", "예"], horizontal=True)
-    exercise_pain_text = st.radio("운동 중 통증이 심했나요?", ["아니오", "예"], horizontal=True)
+selected_pain = st.radio(
+    "통증 점수를 선택하세요",
+    options=pain_options,
+    index=3,
+    horizontal=True,
+    key="pain_radio",
+    label_visibility="collapsed"
+)
+
+# "🙂 3"에서 숫자 3만 분리
+pain = int(selected_pain.split()[-1])
+
+st.info(f"선택한 통증 점수: {pain}점")
+
+
+# =========================
+# 피로도 입력: - / + 방식
+# =========================
+st.subheader("오늘 컨디션")
+
+st.caption("0은 피로 없음, 10은 매우 심한 피로입니다.")
+
+fatigue = st.number_input(
+    "피로도 점수",
+    min_value=0,
+    max_value=10,
+    value=3,
+    step=1,
+    key="fatigue_input"
+)
+
+
+# =========================
+# ROM 입력: 5도 단위
+# =========================
+st.subheader("오늘 치료실에서 수행한 무릎 굴곡 각도")
+
+st.caption("무릎이 구부러지는 각도를 5도 단위로 입력하세요.")
+
+rom = st.number_input(
+    " 버튼을 눌러주세요 (°)",
+    min_value=0,
+    max_value=135,
+    value=100,
+    step=5,
+    key="rom_input"
+)
+
+
+# =========================
+# 붓기 및 운동 중 통증
+# =========================
+st.subheader("추가 상태 확인")
+
+swelling_text = st.radio(
+    "오늘 무릎에 붓기가 있나요?",
+    options=["아니오", "예"],
+    horizontal=True,
+    key="swelling_radio"
+)
+
+exercise_pain_text = st.radio(
+    "운동 중 통증이 평소보다 심했나요?",
+    options=["아니오", "예"],
+    horizontal=True,
+    key="exercise_pain_radio"
+)
 
 # =========================
 # 오늘 운동 추천 버튼
