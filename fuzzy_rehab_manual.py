@@ -460,24 +460,36 @@ def apply_safety_filter(patient: PatientInput, level, prescription):
         caution_list.append("통증이 높아 Level 1로 제한")
 
     if patient.swelling >= 2.5:
-        if patient.postop_day <= 14:
-            # 0~14일: Level 2 이하로 제한
-            if level > 2:
-                level = 2
-                prescription.append("수술 초기(14일 이하) 심한 붓기로 인해 운동 강도를 Level 2로 제한합니다.")
 
-        elif 15 <= patient.postop_day <= 28:
-            # 15~28일: Level 3 이하로 제한
-            if level > 3:
-                level = 3
-                prescription.append("수술 중기(15~28일) 붓기로 인해 운동 강도를 Level 3으로 제한합니다.")
+        if patient.postop_day <= 14:
+            new_level = min(safe_level, 2)
+
+            if new_level != safe_level:
+                safe_level = new_level
+                adjusted = True
+                caution_list.append(
+                    "수술 후 14일 이내이며 부종이 있어 운동 강도를 Level 2 이하로 제한했습니다."
+                )
+
+        elif patient.postop_day <= 28:
+            new_level = min(safe_level, 3)
+
+            if new_level != safe_level:
+                safe_level = new_level
+                adjusted = True
+                caution_list.append(
+                    "수술 후 15~28일이며 부종이 있어 운동 강도를 Level 3 이하로 제한했습니다."
+                )
 
         else:
-            # 28일 이후: 현재 레벨에서 1단계 하향 (최소 Level 1 보장)
-            original_level = level
-            level = max(1, level - 1)
-            if original_level != level:
-                prescription.append("수술 28일 이후 붓기로 인해 운동 강도를 1단계 하향 조정합니다.")
+            new_level = max(1, safe_level - 1)
+
+            if new_level != safe_level:
+                safe_level = new_level
+                adjusted = True
+                caution_list.append(
+                    "부종이 있어 현재 운동 강도에서 1단계 낮췄습니다."
+                )
 
     if patient.adherence < 50:
         safe_level = min(safe_level, 2)
